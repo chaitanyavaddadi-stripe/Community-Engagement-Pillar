@@ -178,4 +178,61 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+// Check if we're on a blog page
+    const isBlogPage = window.location.pathname.includes('/blog/');
+    
+    if (isBlogPage) {
+        // If on a blog page, don't need to set up tab navigation
+        return;
+    }
+    
+    // ... rest of your existing tab logic ...
+    
+    // Handle direct link to blog tab
+    if (window.location.hash === '#blog') {
+        showTab('blog');
+    }
+    
+    // Add animation for blog cards
+    const animateBlogCards = () => {
+        const blogCards = document.querySelectorAll('.blog-card');
+        
+        blogCards.forEach((card, index) => {
+            const cardPosition = card.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight;
+            
+            // Add a slight delay for each card based on its index
+            setTimeout(() => {
+                if (cardPosition < screenPosition) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            }, index * 100); // 100ms delay between each card
+        });
+    };
+    
+    // Initialize blog cards for animation
+    document.querySelectorAll('.blog-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'all 0.5s ease';
+    });
+    
+    // Listen for tab changes to trigger animations
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            if (this.getAttribute('data-tab') === 'blog') {
+                setTimeout(animateBlogCards, 100);
+            }
+        });
+    });
+    
+    // Call animation function on scroll in case they're already in the blog tab
+    window.addEventListener('scroll', () => {
+        if (document.getElementById('blog').style.display !== 'none') {
+            animateBlogCards();
+        }
+    });
+});
     
