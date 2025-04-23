@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on a blog page
+    const isBlogPage = window.location.pathname.includes('/blog/');
+    
+    if (isBlogPage) {
+        // If on a blog page, don't need to set up tab navigation
+        return;
+    }
+
     // Tab navigation functionality
     const tabLinks = document.querySelectorAll('.nav-item');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -111,83 +119,72 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 10);
     }
 
-        // Simple carousel functionality
-        const carouselImages = [
-            "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-        ];
-        
-        const carouselImage = document.querySelector('.carousel-image');
-        if (carouselImage) {
-            let currentImageIndex = 0;
-            
-            // Change image every 5 seconds
-            setInterval(() => {
-                currentImageIndex = (currentImageIndex + 1) % carouselImages.length;
-                carouselImage.style.opacity = '0';
-                
-                setTimeout(() => {
-                    carouselImage.src = carouselImages[currentImageIndex];
-                    carouselImage.style.opacity = '1';
-                }, 500);
-            }, 5000);
-            
-            // Add fade effect to image transitions
-            carouselImage.style.transition = 'opacity 0.5s ease';
-        }
+    // Simple carousel functionality
+    const carouselImages = [
+        "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+        "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+        "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+        "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+    ];
     
-        // Add animation to elements as they come into view
-        const animateOnScroll = () => {
-            const elements = document.querySelectorAll('.card, .impact-story, .pillar-lead, .animation-container');
+    const carouselImage = document.querySelector('.carousel-image');
+    if (carouselImage) {
+        let currentImageIndex = 0;
+        
+        // Change image every 5 seconds
+        setInterval(() => {
+            currentImageIndex = (currentImageIndex + 1) % carouselImages.length;
+            carouselImage.style.opacity = '0';
             
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight;
-                
-                // If element is in viewport
-                if (elementPosition < screenPosition) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                } else {
-                    element.style.opacity = '0';
-                    element.style.transform = 'translateY(20px)';
-                }
-            });
-        };
+            setTimeout(() => {
+                carouselImage.src = carouselImages[currentImageIndex];
+                carouselImage.style.opacity = '1';
+            }, 500);
+        }, 5000);
         
-        // Set initial state for animations
-        document.querySelectorAll('.card, .impact-story, .pillar-lead, .animation-container').forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            element.style.transition = 'all 0.5s ease';
-        });
-        
-        // Listen for scroll events
-        window.addEventListener('scroll', animateOnScroll);
-        
-        // Run once on load
-        animateOnScroll();
-    
-        // Handle hash navigation
-        if (window.location.hash) {
-            const tabId = window.location.hash.substring(1);
-            if (document.getElementById(tabId)) {
-                showTab(tabId);
-            }
-        }
-    });
-
-// Check if we're on a blog page
-    const isBlogPage = window.location.pathname.includes('/blog/');
-    
-    if (isBlogPage) {
-        // If on a blog page, don't need to set up tab navigation
-        return;
+        // Add fade effect to image transitions
+        carouselImage.style.transition = 'opacity 0.5s ease';
     }
+
+    // Add animation to elements as they come into view
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.card, .impact-story, .pillar-lead, .animation-container');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight;
+            
+            // If element is in viewport
+            if (elementPosition < screenPosition) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            } else {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+            }
+        });
+    };
     
-    // ... rest of your existing tab logic ...
+    // Set initial state for animations
+    document.querySelectorAll('.card, .impact-story, .pillar-lead, .animation-container').forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'all 0.5s ease';
+    });
+    
+    // Listen for scroll events
+    window.addEventListener('scroll', animateOnScroll);
+    
+    // Run once on load
+    animateOnScroll();
+
+    // Handle hash navigation
+    if (window.location.hash) {
+        const tabId = window.location.hash.substring(1);
+        if (document.getElementById(tabId)) {
+            showTab(tabId);
+        }
+    }
     
     // Handle direct link to blog tab
     if (window.location.hash === '#blog') {
@@ -230,9 +227,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Call animation function on scroll in case they're already in the blog tab
     window.addEventListener('scroll', () => {
-        if (document.getElementById('blog').style.display !== 'none') {
+        if (document.getElementById('blog') && document.getElementById('blog').style.display !== 'none') {
             animateBlogCards();
         }
     });
 });
-    
